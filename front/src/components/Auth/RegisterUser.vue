@@ -19,6 +19,7 @@
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Registrarse</button>
           </div>
         </form>
+        <p v-if="error"> {{ this.error }}</p>
         <p class="text-center text-gray-500 text-xs">&copy; 2023 Nombre de la empresa. Todos los derechos reservados.</p>
       </div>
     </div>
@@ -30,18 +31,36 @@
       return {
         name: '',
         email: '',
-        password: ''
+        password: '',
+        error: '',
       };
     },
     methods: {
       register() {
-        // Lógica para enviar la solicitud de registro al API
+        this.error = ''
         const userData = {
           name: this.name,
           email: this.email,
           password: this.password
         };
-        console.log('Registro:', userData);
+
+        service.interceptors.request.use(
+          config => {
+            config.headers['Authorization'] = `Bearer ${this.$store.state.token}`
+                return config;
+            },
+            error => {
+                return Promise.reject(error)
+            }
+        );
+          service
+            .post('register', userData)
+            .then(() => {
+              this.$router.push('/list-task')
+            })
+            .catch((error) => {
+              this.error = error.response.data.message
+            })
       }
     }
   };

@@ -25,7 +25,6 @@
       data() {
         return {
           task: {
-            // Here you can define the necessary properties for the new task
             title: '',
             description: '',
             completed: false,
@@ -47,11 +46,9 @@
           service
             .post('tasks', this.task)
             .then(() => {
-              // Task created successfully, redirect to the task list
               this.$router.push('/list-task')
             })
             .catch((error) => {
-              // Error creating the task, display error message
               this.error = error.response.data.message;
             });
         },

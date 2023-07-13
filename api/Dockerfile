@@ -12,8 +12,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
-    iputils-ping
+    unzip
 
 # Instalar extensiones de PHP necesarias
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
@@ -29,9 +28,6 @@ RUN composer install --no-interaction --no-scripts --no-plugins
 
 # Generar la clave de la aplicación
 RUN php artisan key:generate
-
-# Ejecutamos las migraciones y los seeders
-RUN php artisan migrate --seed
 
 # Configurar los permisos adecuados en las carpetas de almacenamiento
 RUN chown -R www-data:www-data /var/www/html/storage

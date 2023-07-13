@@ -5,6 +5,7 @@
         <thead>
           <tr>
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Descripcion</th>
             <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Estado</th>
             <th class="px-6 py-3 bg-gray-50"></th>
           </tr>
@@ -12,6 +13,7 @@
         <tbody>
           <tr v-for="task, index in tasks" :key="task.id">
             <td class="px-6 py-4 whitespace-no-wrap">{{ task.title }}</td>
+            <td class="px-6 py-4 whitespace-no-wrap">{{ task.description }}</td>
             <td class="px-6 py-4 whitespace-no-wrap">{{ task.completed ? 'Completada' : 'Pendiente' }}</td>
             <td class="px-6 py-4 whitespace-no-wrap">
               <button @click="deleteTask(task.id)" class="text-red-500 hover:text-red-700 pr-2">Eliminar</button>
@@ -50,16 +52,6 @@
     },
     methods: {
       fetchTasks() {
-        service.interceptors.request.use(
-              config => {
-                config.headers['Authorization'] = `Bearer ${this.$store.state.token}`;
-                    return config;
-                },
-                error => {
-                    return Promise.reject(error);
-                }
-            );
-
         service
           .get('tasks').then((response) => {
             this.tasks = response.data.tasks;

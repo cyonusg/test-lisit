@@ -6,6 +6,10 @@ import listTasks from '../components/Tasks/TaskList.vue';
 import store from "../store/index";
 const routes = [
   {
+    path: '/',
+    component: login 
+  },
+  {
     path: '/login',
     name: 'login',
     component: login 
